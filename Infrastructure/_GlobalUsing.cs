@@ -1,4 +1,8 @@
-﻿global using Common;
+﻿global using Auth;
+global using AuthPermission.Entity;
+global using AuthPermission.Helper;
+global using AuthPermission.PermissionManage;
+global using Common;
 global using Common.AssemplyScanning;
 global using FluentValidation;
 global using Microsoft.AspNetCore.Identity;
@@ -6,6 +10,6 @@ global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
-global using System.Linq.Expressions;
-
-
+global using Permissions.Repositories;
+global using Products.Repositories;
+global using Action = AuthPermission.Helper.Action;

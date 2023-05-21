@@ -1,4 +1,8 @@
-﻿public class BaseRepository<T> : IBaseRepository<T>
+﻿using Common;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+
+public class BaseRepository<T> : IBaseRepository<T>
         where T : BaseEntity
 {
     public DbContext DbContext { get; }

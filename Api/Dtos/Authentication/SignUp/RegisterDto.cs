@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-public class RegisterDto
+﻿public class RegisterDto
 {
     [Required(ErrorMessage = "FirstName is required")]
     public string FirstName { get; set; }

@@ -10,7 +10,7 @@
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Version = "v1",
-                Title = "CustomerManagementApi",
+                Title = "ProductManagementApi",
             });
 
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

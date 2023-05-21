@@ -1,18 +1,14 @@
-﻿using Core.Identity;
-using System.ComponentModel.DataAnnotations;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-
+﻿
 [Route("api/[controller]")]
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<AppUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IConfiguration _configuration;
-    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly SignInManager<AppUser> _signInManager;
 
-    public AuthenticationController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SignInManager<IdentityUser> signInManager)
+    public AuthenticationController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SignInManager<AppUser> signInManager)
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -128,43 +124,7 @@ public class AuthenticationController : ControllerBase
     [HttpPost("signOut")]
     public async Task<IActionResult> SignOut()
     {
-        var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-        if (string.IsNullOrEmpty(token))
-        {
-            return BadRequest("Access token is missing.");
-        }
-
-        var tokenSecret = _configuration["JWT:Secret"];
-        var keyBytes = Encoding.UTF8.GetBytes(tokenSecret);
-        var signingKey = new SymmetricSecurityKey(keyBytes);
-
-        try
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var validationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = _configuration["JWT:ValidIssuer"],
-                ValidAudience = _configuration["JWT:ValidAudience"],
-                IssuerSigningKey = signingKey
-            };
-
-            SecurityToken validatedToken;
-            var principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
-
-            var jwtToken = (JwtSecurityToken)validatedToken;
-            var expiryTime = DateTime.UtcNow;
-            jwtToken.Payload["exp"] = new DateTimeOffset(expiryTime).ToUnixTimeSeconds();
-
-
-        }
-        catch (Exception ex)
-        {
-            return BadRequest("Invalid access token.");
-        }
+        await _signInManager.SignOutAsync();
         return Ok(new Response
         {
             Status = "Success",
@@ -178,7 +138,7 @@ public class AuthenticationController : ControllerBase
         var token = new JwtSecurityToken(
             issuer: _configuration["JWT:ValidIssuer"],
             audience: _configuration["JWT:ValidAudience"],
-            expires: DateTime.Now.AddHours(3),
+            expires: DateTime.Now.AddHours(1),
             claims: authClaims,
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
             );

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Products.Dtos
+﻿namespace Products.Dtos
 {
     public class ProductImageDto : BaseDto
     {

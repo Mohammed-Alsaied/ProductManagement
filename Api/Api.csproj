@@ -26,8 +26,4 @@
     <ProjectReference Include="..\Products\Products.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\uploads\products\images\" />
-  </ItemGroup>
-
 </Project>

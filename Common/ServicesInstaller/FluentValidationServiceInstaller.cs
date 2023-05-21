@@ -1,9 +1,4 @@
-﻿using Common.AssemplyScanning;
-using FluentValidation.AspNetCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Common.Configurations
+﻿namespace Common.Configurations
 {
     public class FluentValidationServiceInstaller : IInstaller
     {

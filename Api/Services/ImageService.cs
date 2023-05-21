@@ -1,6 +1,4 @@
-﻿using Products.Dtos;
-using Products.Services;
-
+﻿
 namespace Api.Services
 {
     public class ImageService : IImageService
@@ -27,7 +25,7 @@ namespace Api.Services
 
             string fileName = Guid.NewGuid().ToString() + Path.GetExtension(productImageDto.ImageFile.FileName);
 
-            string uploadPath = Path.Combine("wwwroot", $"uploads/products/images/{productId}");
+            string uploadPath = Path.Combine("wwwroot", $"uploads/products/{product.Name}/images");
 
             if (!Directory.Exists(uploadPath))
             {
@@ -41,7 +39,7 @@ namespace Api.Services
                 await productImageDto.ImageFile.CopyToAsync(stream);
             }
 
-            product.Image = $"/uploads/products/images/{productId}/{fileName}";
+            product.Image = $"/uploads/products/{product.Name}/images/{fileName}";
             await _unitOfWork.UpdateAsync(product);
 
             return new ImageResponse

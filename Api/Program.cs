@@ -1,6 +1,3 @@
-using Api.Services;
-using Products.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
 ConfigurationManager configuration = builder.Configuration;
@@ -10,9 +7,12 @@ builder.Services.AddInstallerFromAssembly<ProductInstaller>(builder.Configuratio
 builder.Services.AddInstallerFromAssembly<FluentValidationServiceInstaller>(builder.Configuration);
 builder.Services.AddInstallerFromAssembly<PresentationServiceInstaller>(builder.Configuration);
 builder.Services.AddInstallerFromAssembly<InfrastructureServiceInstaller>(builder.Configuration);
+builder.Services.AddInstallerFromAssembly<PermissionsServiceInstaller>(builder.Configuration);
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<AppUser, IdentityRole>()
                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                   .AddRoleManager<RoleManager<IdentityRole>>()
+                   .AddSignInManager<SignInManager<AppUser>>()
                    .AddDefaultTokenProviders();
 builder.Services.AddScoped<IImageService, ImageService>();
 ////JWT
@@ -30,6 +30,8 @@ builder.Services.AddAuthentication(options =>
     {
         ValidateIssuer = true,
         ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
         ValidAudience = configuration["JWT:ValidAudience"],
         ValidIssuer = configuration["JWT:ValidIssuer"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
@@ -47,6 +49,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+SeedData.Initialize(app.Services).Wait();
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseAuthentication();

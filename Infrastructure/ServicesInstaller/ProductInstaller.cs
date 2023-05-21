@@ -1,4 +1,6 @@
-﻿public class ProductInstaller : IInstaller
+﻿using Products.Repositories;
+
+public class ProductInstaller : IInstaller
 {
     public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {

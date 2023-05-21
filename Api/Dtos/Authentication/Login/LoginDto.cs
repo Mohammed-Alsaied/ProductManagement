@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-public class LoginDto
+﻿public class LoginDto
 {
     [Required(ErrorMessage = "Email is required")]
     public string Email { get; set; }

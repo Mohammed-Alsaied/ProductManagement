@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Core.Identity
+﻿
+namespace Auth
 {
     public class AppUser : IdentityUser
     {

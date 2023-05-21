@@ -1,5 +1,3 @@
-using Products.Dtos;
-
 public class ProductImageDtoValidator : BaseDtoValidator<ProductImageDto>
 {
     public ProductImageDtoValidator()

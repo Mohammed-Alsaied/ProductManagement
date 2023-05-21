@@ -1,7 +1,3 @@
-using Microsoft.AspNetCore.Hosting;
-using Products.Dtos;
-using Products.Services;
-
 [Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
 [ApiController]
@@ -21,16 +17,18 @@ public class ProductsController : BaseController<Product, ProductForCreateDto, P
         _imageService = imageService;
         _environment = environment;
     }
-    [AllowAnonymous]
+    [MustHavePermission(Action.View, Resource.Products)]
     public override Task<IEnumerable<ProductForReadDto>> Get()
     {
         return base.Get();
     }
-    [AllowAnonymous]
+    [MustHavePermission(Action.View, Resource.Products)]
     public override Task<IActionResult> Get(Guid id)
     {
         return base.Get(id);
     }
+
+    [MustHavePermission(Action.Delete, Resource.Products)]
     public override async Task Delete(Guid id)
     {
         var product = await _unitOfWork.ReadByIdAsync(id);
@@ -48,16 +46,19 @@ public class ProductsController : BaseController<Product, ProductForCreateDto, P
         }
         await _unitOfWork.DeleteAsync(id);
     }
+    [MustHavePermission(Action.Create, Resource.Products)]
     public override Task<IActionResult> Post([FromForm] ProductForCreateDto entityDto)
     {
         return base.Post(entityDto);
     }
+    [MustHavePermission(Action.Upload, Resource.Products)]
     [HttpPost("upload-image")]
     public async Task<IActionResult> UploadImage([FromForm] Guid productId, [FromForm] ProductImageDto productImageDto)
     {
         var result = await _imageService.UploadImage(productId, productImageDto);
         return Ok(result);
     }
+    [MustHavePermission(Action.Update, Resource.Products)]
     public override Task<IActionResult> Put(Guid id, [FromForm] ProductForUpdateDto productForUpdateDto)
     {
         return base.Put(id, productForUpdateDto);

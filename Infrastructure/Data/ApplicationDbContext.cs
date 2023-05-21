@@ -1,8 +1,6 @@
-﻿
-
-public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+﻿public class ApplicationDbContext : IdentityDbContext<AppUser>
 {
-    protected ApplicationDbContext()
+    public ApplicationDbContext()
     {
     }
 

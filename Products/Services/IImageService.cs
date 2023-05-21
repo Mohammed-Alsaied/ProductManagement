@@ -1,6 +1,4 @@
-﻿using Products.Dtos;
-
-namespace Products.Services
+﻿namespace Products.Services
 {
     public interface IImageService
     {

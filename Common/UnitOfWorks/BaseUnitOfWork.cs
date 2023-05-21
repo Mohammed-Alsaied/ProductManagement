@@ -1,4 +1,7 @@
-﻿public class BaseUnitOfWork<T> : IBaseUnitOfWork<T>
+﻿using Common;
+using System.Linq.Expressions;
+
+public class BaseUnitOfWork<T> : IBaseUnitOfWork<T>
         where T : BaseEntity
 {
     protected readonly IBaseRepository<T> _repsitory;
